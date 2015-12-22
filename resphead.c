@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include <stdio.h>
+#include <string.h>
 
 #include "resphead.h"
 #include "helper.h"
