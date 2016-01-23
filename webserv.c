@@ -1,15 +1,3 @@
-/*
-
-  WEBSERV.C
-  =========
-  (c) Copyright Paul Griffiths 1999
-  Email: mail@paulgriffiths.net
-
-  A simple web server
-
-*/
-
-
 #include <sys/socket.h>       /*  socket definitions        */
 #include <sys/types.h>        /*  socket types              */
 #include <sys/wait.h>         /*  for waitpid()             */
@@ -25,6 +13,7 @@
 
 #define SERVER_PORT            (8080)
 
+int server_port = SERVER_PORT;
 
 /*  main() funcion  */
 
@@ -32,8 +21,13 @@ int main(int argc, char *argv[]) {
 
     int    listener, conn;
     pid_t  pid;
+
     struct sockaddr_in servaddr;
-    
+   
+   	char parameter[128];
+	int res = get_parameter("root_dir", parameter);
+	if (res)
+		server_port = atoi(parameter);
 
     /*  Create socket  */
 

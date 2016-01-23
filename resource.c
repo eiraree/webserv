@@ -1,15 +1,3 @@
-/*
-
-  RESOURCE.C
-  ==========
-  (c) Copyright Paul Griffiths 1999
-  Email: mail@paulgriffiths.net
-
-  Implementation of functions for returning a resource.
-
-*/
-
-
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -84,4 +72,39 @@ int Return_Error_Msg(int conn, struct ReqInfo * reqinfo) {
 
     return 0;
 
+}
+
+int get_parameter(char *conf_str, char *result) {
+
+	char *temp_array = NULL; 
+	int file_size = 0;
+	int str_size = 0;
+
+	FILE * fdConfig; 
+	fdConfig = fopen ("config.txt", "r");  
+
+
+	if (fdConfig == NULL) {
+		printf ("[Error]: File not found! \n");
+		return 1;
+	}
+
+	fseek(fdConfig, 0, SEEK_END);
+	file_size = ftell(fdConfig);
+	fseek(fdConfig, 0, SEEK_SET);
+	printf("val = %d\n", file_size);
+	temp_array = (char*) malloc(file_size);
+
+	if (temp_array == NULL)
+		return 1;
+
+	fgets (temp_array, 100, fdConfig);
+	str_size = strlen (conf_str);
+	result = strstr (temp_array, conf_str);
+
+	printf("YO KNIGGA!\n");
+	printf ("Returned String 1: %s\n", result);
+
+	free(temp_array);
+	fclose (fdConfig); 
 }
