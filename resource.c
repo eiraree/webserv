@@ -98,9 +98,15 @@ int get_parameter(char *conf_str, char *result) {
 	if (temp_array == NULL)
 		return 1;
 
-	fgets (temp_array, 100, fdConfig);
-	str_size = strlen (conf_str);
-	result = strstr (temp_array, conf_str);
+        while (! feof(fdConfig)) {
+            fgets (temp_array, 100, fdConfig);
+            str_size = strlen (conf_str) + 3;
+            char *res = strstr(temp_array, conf_str);
+            if (res != NULL) 
+                strcpy(result, res + str_size);
+        }
+        
+    
 
 	printf("YO KNIGGA!\n");
 	printf ("Returned String 1: %s\n", result);
