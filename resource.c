@@ -101,11 +101,12 @@ int get_parameter(char *conf_str, char *result) {
 		return 1;
 
         while (! feof(fdConfig)) {
-            fgets (temp_array, 100, fdConfig);
+            fgets (temp_array, file_size, fdConfig);
             str_size = strlen (conf_str) + 3;
             res = strstr(temp_array, conf_str);
             if (res != NULL) 
                 strcpy(result, res + str_size);
+            break;
         }
         
     
