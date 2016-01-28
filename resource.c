@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "resource.h"
 #include "reqhead.h"
@@ -79,6 +80,7 @@ int get_parameter(char *conf_str, char *result) {
 	char *temp_array = NULL; 
 	int file_size = 0;
 	int str_size = 0;
+        char *res = NULL;
 
 	FILE * fdConfig; 
 	fdConfig = fopen ("config.txt", "r");  
@@ -101,7 +103,7 @@ int get_parameter(char *conf_str, char *result) {
         while (! feof(fdConfig)) {
             fgets (temp_array, 100, fdConfig);
             str_size = strlen (conf_str) + 3;
-            char *res = strstr(temp_array, conf_str);
+            res = strstr(temp_array, conf_str);
             if (res != NULL) 
                 strcpy(result, res + str_size);
         }
@@ -113,4 +115,6 @@ int get_parameter(char *conf_str, char *result) {
 
 	free(temp_array);
 	fclose (fdConfig); 
+        
+        return 0;
 }

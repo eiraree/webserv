@@ -13,6 +13,8 @@
 
 #define SERVER_PORT            (8080)
 
+int get_parameter(char *, char *);
+
 int server_port = SERVER_PORT;
 
 /*  main() funcion  */
