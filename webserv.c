@@ -10,14 +10,14 @@
 
 #include "helper.h"
 #include "servreq.h"
+#include "resource.h"
 
-#define SERVER_PORT            (8080)
+#define SERVER_PORT            80
 
-int get_parameter(char *, char *);
+/* Function definition */
+int get_parameter(char *what_to_read, char *where_to_store);
 
-int server_port = SERVER_PORT;
-
-/*  main() funcion  */
+/*  main() function  */
 
 int main(int argc, char *argv[]) {
 
@@ -28,11 +28,11 @@ int main(int argc, char *argv[]) {
    
    	char parameter[128];
 	int res = get_parameter("root_dir", parameter);
+	/* if 'res' == '1' then parameter reading was OK, otherwise 'res' == '0' */
 	if (res)
-		server_port = atoi(parameter);
+		set_root_dir(parameter);
 
     /*  Create socket  */
-
     if ( (listener = socket(AF_INET, SOCK_STREAM, 0)) < 0 )
 	Error_Quit("Couldn't create listening socket.");
 

@@ -23,5 +23,7 @@ int Return_Resource (int conn, int resource, struct ReqInfo * reqinfo);
 int Check_Resource  (struct ReqInfo * reqinfo);
 int Return_Error_Msg(int conn, struct ReqInfo * reqinfo);
 
+void set_root_dir(char *parameter);
+
 
 #endif  /*  PG_RESOURCE_H  */

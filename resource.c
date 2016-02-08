@@ -14,7 +14,7 @@
     the server will use, i.e. /index.html will translate
     here to /home/httpd/html/index.html                   */
 
-static char server_root[1000] = ".";
+char server_root[1024] = ".";
 
 
 /*  Returns a resource  */
@@ -80,7 +80,7 @@ int get_parameter(char *conf_str, char *result) {
 	char *temp_array = NULL; 
 	int file_size = 0;
 	int str_size = 0;
-        char *res = NULL;
+	char *res = NULL;
 
 	FILE * fdConfig; 
 	fdConfig = fopen ("config.txt", "r");  
@@ -94,28 +94,29 @@ int get_parameter(char *conf_str, char *result) {
 	fseek(fdConfig, 0, SEEK_END);
 	file_size = ftell(fdConfig);
 	fseek(fdConfig, 0, SEEK_SET);
-	printf("val = %d\n", file_size);
 	temp_array = (char*) malloc(file_size);
 
 	if (temp_array == NULL)
-		return 1;
+		return 0;
 
-        while (! feof(fdConfig)) {
-            fgets (temp_array, file_size, fdConfig);
-            str_size = strlen (conf_str) + 3;
-            res = strstr(temp_array, conf_str);
-            if (res != NULL) 
-                strcpy(result, res + str_size);
-            break;
-        }
-        
-    
-
-	printf("YO KNIGGA!\n");
-	printf ("Returned String 1: %s\n", result);
+	while (! feof(fdConfig)) {
+		fgets (temp_array, file_size, fdConfig);
+		str_size = strlen (conf_str) + 3;
+		res = strstr(temp_array, conf_str);
+		if (res != NULL) {
+			strcpy(result, res + str_size);
+			return 1;
+		}
+		break;
+	}
 
 	free(temp_array);
 	fclose (fdConfig); 
-        
-        return 0;
+
+	return 0;
+}
+
+void set_root_dir(char *string) {
+	if (string)
+		strcpy(server_root, string);
 }
