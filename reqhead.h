@@ -24,7 +24,7 @@ struct ReqInfo {
     enum Req_Type   type;
     char           *referer;
     char           *useragent;
-    char           *resource;
+	char           *resource;
     int             status;
 };
 

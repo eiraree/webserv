@@ -18,3 +18,6 @@ resphead.o: resphead.c resphead.h helper.h
 
 resource.o: resource.c resource.h
 	gcc -o resource.o resource.c -c -ansi -pedantic -Wall
+clean:
+	rm *.o
+	rm webserv

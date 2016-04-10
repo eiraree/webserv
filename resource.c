@@ -94,7 +94,6 @@ int get_parameter(char *conf_str, char *result) {
 	fseek(fdConfig, 0, SEEK_END);
 	file_size = ftell(fdConfig);
 	fseek(fdConfig, 0, SEEK_SET);
-	printf("val = %d\n", file_size);
 	temp_array = (char*) malloc(file_size);
 
 	if (temp_array == NULL)
@@ -104,18 +103,42 @@ int get_parameter(char *conf_str, char *result) {
             fgets (temp_array, file_size, fdConfig);
             str_size = strlen (conf_str) + 3;
             res = strstr(temp_array, conf_str);
-            if (res != NULL) 
+            if ((res != NULL) && (res [str_size - 2] == '=')) {
                 strcpy(result, res + str_size);
-            break;
+                break;
+            }
         }
         
-    
-
-	printf("YO KNIGGA!\n");
-	printf ("Returned String 1: %s\n", result);
-
 	free(temp_array);
 	fclose (fdConfig); 
         
         return 0;
+}
+
+
+void welcome_window () {
+    int i = 0;
+    int j = 0;
+ 
+    printf ("+");
+    
+    for (i = 0; i < WINDOW_X; i++)
+        printf("=");
+    
+    printf("+\n");
+    
+    for (j = 0; j <= WINDOW_Y; j++) {
+        printf ("||\033[%dC||\n", WINDOW_X - 2);   
+    }
+    
+    printf ("+");
+    
+    for (i = 0; i < WINDOW_X; i++)
+        printf("=");
+    
+    printf("+\n");
+    
+    printf ("\033[%dA\033[%dCWebKo server v.1.0\n", WINDOW_Y - 3, (WINDOW_X - (int)strlen("WebKo server v.1.0")) / 2);
+    printf ("\033[%dCPaul Griffin's webserver\n", (WINDOW_X - 6 - STRING_SIZE) / 2);
+    printf ("\033[%dCpatched by Anya Podolska\n\n\033[%dE\n", (WINDOW_X - 6 - STRING_SIZE) / 2, WINDOW_Y/2);
 }

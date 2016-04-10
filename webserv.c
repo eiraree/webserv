@@ -10,6 +10,7 @@
 
 #include "helper.h"
 #include "servreq.h"
+#include "resource.h"
 
 #define SERVER_PORT            (8080)
 
@@ -25,9 +26,11 @@ int main(int argc, char *argv[]) {
     pid_t  pid;
 
     struct sockaddr_in servaddr;
+    
+    welcome_window();
    
    	char parameter[128];
-	int res = get_parameter("root_dir", parameter);
+	int res = get_parameter("server_port", parameter);
 	if (res)
 		server_port = atoi(parameter);
 
