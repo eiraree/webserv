@@ -12,30 +12,39 @@
 #include "servreq.h"
 #include "resource.h"
 
-#define SERVER_PORT            (8080)
+#define SERVER_PORT		80
 
-int get_parameter(char *, char *);
+/* Function definition */
+int get_parameter(char *what_to_read, char *where_to_store);
 
-int server_port = SERVER_PORT;
-
-/*  main() funcion  */
+/*  main() function  */
 
 int main(int argc, char *argv[]) {
 
-    int    listener, conn;
-    pid_t  pid;
+	int res;
+	int	conn;
+    int listener;
+   	char parameter[128];
 
+    pid_t  pid;
     struct sockaddr_in servaddr;
-    
+
     welcome_window();
    
-   	char parameter[128];
-	int res = get_parameter("server_port", parameter);
+
+	printf("[INFO] WebKo started\n");
+
+	/************************ Configuration from the file *****************************/
+
+	res = get_parameter("root_dir", parameter);
+	/* if 'res' == '1' then parameter reading was OK, otherwise 'res' == '0' */
 	if (res)
-		server_port = atoi(parameter);
+		set_root_dir(parameter);
+
+	printf("[INFO] Parameters read\n");
+	/**********************************************************************************/
 
     /*  Create socket  */
-
     if ( (listener = socket(AF_INET, SOCK_STREAM, 0)) < 0 )
 	Error_Quit("Couldn't create listening socket.");
 
@@ -53,6 +62,7 @@ int main(int argc, char *argv[]) {
     if ( bind(listener, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0 )
 	Error_Quit("Couldn't bind listening socket.");
 
+	printf("[INFO] Socket assigned\n");
 
     /*  Make socket a listening socket  */
 
@@ -60,8 +70,9 @@ int main(int argc, char *argv[]) {
 	Error_Quit("Call to listen failed.");
 
 
-    /*  Loop infinitely to accept and service connections  */
+	printf("[INFO] Waiting for connections..\n");
 
+    /*  Loop infinitely to accept and service connections  */
     while ( 1 ) {
 
 	/*  Wait for connection  */

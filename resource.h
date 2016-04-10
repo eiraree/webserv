@@ -27,5 +27,7 @@ int Check_Resource  (struct ReqInfo * reqinfo);
 int Return_Error_Msg(int conn, struct ReqInfo * reqinfo);
 void welcome_window ();
 
+void set_root_dir(char *parameter);
+
 
 #endif  /*  PG_RESOURCE_H  */

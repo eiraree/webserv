@@ -14,7 +14,7 @@
     the server will use, i.e. /index.html will translate
     here to /home/httpd/html/index.html                   */
 
-static char server_root[1000] = ".";
+char server_root[1024] = ".";
 
 
 /*  Returns a resource  */
@@ -80,7 +80,7 @@ int get_parameter(char *conf_str, char *result) {
 	char *temp_array = NULL; 
 	int file_size = 0;
 	int str_size = 0;
-        char *res = NULL;
+	char *res = NULL;
 
 	FILE * fdConfig; 
 	fdConfig = fopen ("config.txt", "r");  
@@ -97,24 +97,29 @@ int get_parameter(char *conf_str, char *result) {
 	temp_array = (char*) malloc(file_size);
 
 	if (temp_array == NULL)
-		return 1;
+		return 0;
 
-        while (! feof(fdConfig)) {
-            fgets (temp_array, file_size, fdConfig);
-            str_size = strlen (conf_str) + 3;
-            res = strstr(temp_array, conf_str);
-            if ((res != NULL) && (res [str_size - 2] == '=')) {
-                strcpy(result, res + str_size);
-                break;
-            }
-        }
-        
+	while (! feof(fdConfig)) {
+		fgets (temp_array, file_size, fdConfig);
+		str_size = strlen (conf_str) + 3;
+		res = strstr(temp_array, conf_str);
+		if (res != NULL) {
+			strcpy(result, res + str_size);
+			return 1;
+		}
+		break;
+	}
+
 	free(temp_array);
 	fclose (fdConfig); 
-        
-        return 0;
+
+	return 0;
 }
 
+void set_root_dir(char *string) {
+	if (string)
+		strcpy(server_root, string);
+}
 
 void welcome_window () {
     int i = 0;
@@ -142,3 +147,4 @@ void welcome_window () {
     printf ("\033[%dCPaul Griffin's webserver\n", (WINDOW_X - 6 - STRING_SIZE) / 2);
     printf ("\033[%dCpatched by Anya Podolska\n\n\033[%dE\n", (WINDOW_X - 6 - STRING_SIZE) / 2, WINDOW_Y/2);
 }
+
