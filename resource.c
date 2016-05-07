@@ -50,7 +50,8 @@ int Check_Resource(struct ReqInfo * reqinfo) {
     /*  Concatenate resource name to server root, and try to open  */
 
     strcat(server_root, reqinfo->resource);
-    return open(server_root, O_RDONLY);
+    printf ("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA: {%s} \n", server_root);
+	return open(server_root, O_RDONLY);
 }
 
 
@@ -79,8 +80,9 @@ int get_parameter(char *conf_str, char *result) {
 
 	char *temp_array = NULL; 
 	int file_size = 0;
-	int str_size = 0;
-	char *res = NULL;
+
+	char key[256];
+	char value[256];
 
 	FILE * fdConfig; 
 	fdConfig = fopen ("config.txt", "r");  
@@ -88,7 +90,7 @@ int get_parameter(char *conf_str, char *result) {
 
 	if (fdConfig == NULL) {
 		printf ("[Error]: File not found! \n");
-		return 1;
+		return 0;
 	}
 
 	fseek(fdConfig, 0, SEEK_END);
@@ -97,17 +99,14 @@ int get_parameter(char *conf_str, char *result) {
 	temp_array = (char*) malloc(file_size);
 
 	if (temp_array == NULL)
-		return 0;
+			return 0;
 
-	while (! feof(fdConfig)) {
-		fgets (temp_array, file_size, fdConfig);
-		str_size = strlen (conf_str) + 3;
-		res = strstr(temp_array, conf_str);
-		if (res != NULL) {
-			strcpy(result, res + str_size);
+	while (!feof(fdConfig)) {
+		fscanf (fdConfig, "%s = %s\n", key, value);
+		if (strcmp(conf_str, key) == 0) {
+			strcpy(result, value);
 			return 1;
 		}
-		break;
 	}
 
 	free(temp_array);
